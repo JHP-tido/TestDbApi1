@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestDbApi.Interface;
+using TestDbApi.Models.Extensions;
 
 namespace TestDbApi.Controllers
 {
@@ -40,7 +41,7 @@ namespace TestDbApi.Controllers
             {
                 var customer = _repository.Customer.GetCustomerById(id);
  
-                if (customer.CustomerId.Equals(Guid.Empty))
+                if (customer.IsEmptyObject())
                 { 
                     return NotFound();
                 }
@@ -62,7 +63,7 @@ namespace TestDbApi.Controllers
             {
                 var customer = _repository.Customer.GetCustomerWithDetails(id);
  
-                if (customer.CustomerId.Equals(Guid.Empty))
+                if (customer.IsEmptyObject())
                 {
                     return NotFound();
                 }
@@ -84,7 +85,7 @@ namespace TestDbApi.Controllers
             {
                 var imageUrl = _repository.Customer.GetCustomerImage(id);
 
-                if (imageUrl.CustomerId.Equals(Guid.Empty))
+                if (imageUrl == null || imageUrl == "")
                 {
                     return NotFound();
                 }

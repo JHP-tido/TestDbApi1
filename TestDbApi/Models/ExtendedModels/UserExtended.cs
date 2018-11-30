@@ -11,9 +11,10 @@ namespace TestDbApi.Models.ExtendedModels
         public string Surname { get; set; }
     }
 
-    public class UserExtended
+    public class UserExtended:IEntity
     {
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
+        //public Guid UserId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public Roles Role { get; set; }
@@ -27,16 +28,18 @@ namespace TestDbApi.Models.ExtendedModels
  
         public UserExtended(User user)
         {
-            UserId = user.UserId;
+            Id = user.Id;
+            //UserId = user.UserId;
             Username = user.Username;
             Password = user.Password;
             Role = user.Role;
         }
     }
 
-    public class UserWithOutCustomerInfo
+    public class UserWithOutCustomerInfo:IEntity
     {
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
+        //public Guid UserId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public Roles Role { get; set; }
@@ -47,16 +50,18 @@ namespace TestDbApi.Models.ExtendedModels
 
         public UserWithOutCustomerInfo(User user)
         {
-            UserId = user.UserId;
+            //UserId = user.UserId;
+            Id = user.Id;
             Username = user.Username;
             Password = user.Password;
             Role = user.Role;
         }
     }
 
-    public class UserWithOutPass
+    public class UserWithOutPass:IEntity
     {
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
+        //public Guid UserId { get; set; }
         public string Username { get; set; }
         public Roles Role { get; set; }
 
@@ -66,7 +71,8 @@ namespace TestDbApi.Models.ExtendedModels
 
         public UserWithOutPass(User user)
         {
-            UserId = user.UserId;
+            Id = user.Id;
+            //UserId = user.UserId;
             Username = user.Username;
             Role = user.Role;
         }

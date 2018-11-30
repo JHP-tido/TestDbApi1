@@ -23,7 +23,7 @@ namespace TestDbApi.Repository
 
         public Customer GetCustomerById(Guid customerId)
         {
-            return FindByCondition(customer => customer.CustomerId.Equals(customerId))
+            return FindByCondition(customer => customer.Id.Equals(customerId))
                 .DefaultIfEmpty(new Customer())
                 .FirstOrDefault();
         }
@@ -32,8 +32,8 @@ namespace TestDbApi.Repository
         {
             return new CustomerExtended(GetCustomerById(customerId))
             {
-                CreatedBy = TheCRMContext.Customers.Include(u => u.CreatedBy).Where(c => c.CustomerId == customerId).FirstOrDefault().CreatedBy.Username,
-                UpdatedBy = TheCRMContext.Customers.Include(u => u.UpdatedBy).Where(c => c.CustomerId == customerId).FirstOrDefault().UpdatedBy.Username
+                CreatedBy = TheCRMContext.Customers.Include(u => u.CreatedBy).Where(c => c.Id == customerId).FirstOrDefault().CreatedBy.Username,
+                UpdatedBy = TheCRMContext.Customers.Include(u => u.UpdatedBy).Where(c => c.Id == customerId).FirstOrDefault().UpdatedBy.Username
             };
         }
 

@@ -23,7 +23,7 @@ namespace TestDbApi.Repository
 
         public User GetUserById(Guid userId)
         {
-            return FindByCondition(user => user.UserId.Equals(userId))
+            return FindByCondition(user => user.Id.Equals(userId))
                 .DefaultIfEmpty(new User())
                 .FirstOrDefault();
         }
@@ -49,7 +49,7 @@ namespace TestDbApi.Repository
 
         public void CreateUser(User user)
         {
-            user.UserId = Guid.NewGuid();
+            user.Id = Guid.NewGuid();
             Create(user);
             Save();
         }

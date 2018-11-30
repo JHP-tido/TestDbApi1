@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 namespace TestDbApi.Models
 {
     [Table("user")]
-    public class User
+    public class User:IEntity
     {
         [Key]
         [Column("UserId")]
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
+        //public Guid UserId { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
         [StringLength(50, ErrorMessage = "Username cannot be longer than 50 characters")]

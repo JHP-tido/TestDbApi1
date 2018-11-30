@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace TestDbApi.Models.ExtendedModels
 {
-    public class CustomerExtended
+    public class CustomerExtended:IEntity
     {
-        public Guid CustomerId { get; set; }
+        public Guid Id { get; set; }
+        //public Guid CustomerId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Image { get; set; }
@@ -21,7 +22,8 @@ namespace TestDbApi.Models.ExtendedModels
  
         public CustomerExtended(Customer customer)
         {
-            CustomerId = customer.CustomerId;
+            Id = customer.Id;
+            //CustomerId = customer.CustomerId;
             Name = customer.Name;
             Surname = customer.Surname;
             Image = customer.Image;
