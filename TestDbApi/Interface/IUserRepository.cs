@@ -15,5 +15,6 @@ namespace TestDbApi.Interface
         UserWithOutCustomerInfo GetUserWithOutCustomerInfo(Guid userId);
         UserWithOutPass GetUserWithOutPass(Guid userId);
         void CreateUser(User user);
+        void UpdateUser(User dbUser, User user);
     }
 }

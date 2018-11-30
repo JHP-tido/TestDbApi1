@@ -148,6 +148,36 @@ namespace TestDbApi.Controllers
             {
                 return StatusCode(500, "Internal server error");
             }
-        } 
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser([FromRoute]Guid id, [FromBody]User user)
+        {
+            try
+            {
+                if (user.IsObjectNull())
+                {
+                    return BadRequest("User object is null");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid model object");
+                }
+
+                var dbUser = _repository.User.GetUserById(id);
+                if (dbUser.IsEmptyObject())
+                {
+                    return NotFound();
+                }
+
+                _repository.User.UpdateUser(dbUser, user);
+                return NoContent();
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

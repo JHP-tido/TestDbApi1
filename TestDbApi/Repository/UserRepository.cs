@@ -7,6 +7,7 @@ using TestDbApi.Interface;
 using TestDbApi.Data;
 using TestDbApi.Models.ExtendedModels;
 using Microsoft.EntityFrameworkCore;
+using TestDbApi.Models.Extensions;
 
 namespace TestDbApi.Repository
 {
@@ -51,6 +52,13 @@ namespace TestDbApi.Repository
         {
             user.Id = Guid.NewGuid();
             Create(user);
+            Save();
+        }
+
+        public void UpdateUser(User dbUser, User user)
+        {
+            dbUser.Map(user);
+            Update(dbUser);
             Save();
         }
     }
