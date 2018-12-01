@@ -13,5 +13,7 @@ namespace TestDbApi.Interface
         Customer GetCustomerById(Guid customerId);
         CustomerExtended GetCustomerWithDetails(Guid customerId);
         string GetCustomerImage(Guid customerId);
+        //Modify for delete on cascade in database and remove this code
+        IEnumerable<Customer> CustomersByUser(Guid userId);
     }
 }

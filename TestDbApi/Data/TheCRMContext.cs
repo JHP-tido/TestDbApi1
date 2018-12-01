@@ -12,6 +12,8 @@ namespace TestDbApi.Data
         public TheCRMContext(DbContextOptions<TheCRMContext> options) : base(options)
         { 
         }
+
+        //Lazy loader https://docs.microsoft.com/en-us/ef/core/querying/related-data#lazy-loading
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
     }

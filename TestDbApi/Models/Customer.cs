@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TestDbApi.Models
 {
+    //Lazy Loader https://docs.microsoft.com/en-us/ef/core/querying/related-data#lazy-loading
     [Table("customer")]
     public class Customer:IEntity
     {

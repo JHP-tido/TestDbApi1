@@ -61,5 +61,11 @@ namespace TestDbApi.Repository
             Update(dbUser);
             Save();
         }
+
+        public void DeleteUser(User user)
+        {
+            Delete(user);
+            Save();
+        }
     }
 }
