@@ -46,10 +46,7 @@ namespace TestDbApi.Repository
         //Charge Lazy loader https://docs.microsoft.com/en-us/ef/core/querying/related-data#lazy-loading
         public IEnumerable<Customer> CustomersByUser(Guid userId)
         {
-            Console.WriteLine("___________________________Entra 2");
-            var test = TheCRMContext.Customers.Where(c => c.CreatedBy.Id == userId).Include(u => u.CreatedBy).FirstOrDefault().ToString();
-            Console.WriteLine("_______valores_______:" + test);
-            var create = TheCRMContext.Customers.Include(u => u.CreatedBy).Where(c => c.CreatedBy.Id.Equals(userId));
+            var create = FindByCondition(a => a.CreatedById.Equals(userId));
             if (create.Any())
             {
                 Console.WriteLine("_________________Entra 3");
@@ -58,7 +55,7 @@ namespace TestDbApi.Repository
             else
             {
                 Console.WriteLine("_________________Entra 4");
-                return TheCRMContext.Customers.Include(u => u.UpdatedBy).Where(c => c.UpdatedBy.Id.Equals(userId)).ToList();
+                return FindByCondition(a => a.UpdatedById.Equals(userId));
             }
             /*var Create = FindByCondition(a => a.CreatedBy.Id.Equals(userId));
             if(Create.Any())

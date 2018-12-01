@@ -42,7 +42,8 @@ namespace TestDbApi
             //services.AddSingleton(cfg => cfg.GetService<IOptions<MySettings>>().Value);
             services.ConfigureRepositoryWrapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = mySettings.DbString;
+            //Call Dbstring here
+            var connection = mySettings.OtherDbString;
             services.AddDbContext<TheCRMContext>
                 (options => options.UseSqlServer(connection));
         }
