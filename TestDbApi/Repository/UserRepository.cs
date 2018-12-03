@@ -33,8 +33,10 @@ namespace TestDbApi.Repository
         {
             return new UserExtended(GetUserById(userId))
             {
-                CustomerCreated = TheCRMContext.Users.Include(u => u.CustomersCreate).SelectMany(uc => uc.CustomersCreate).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname }).ToList(),
-                CustomerUpdated = TheCRMContext.Users.Include(u => u.CustomersUpdate).SelectMany(uc => uc.CustomersUpdate).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname}).ToList()
+                NumberCustomersCreated = TheCRMContext.Users.Include(u => u.CustomersCreate).SelectMany(uc => uc.CustomersCreate).Where(cc => cc.CreatedById == userId).Count(),
+                NumberCustomersUpdated = TheCRMContext.Users.Include(u => u.CustomersUpdate).SelectMany(uc => uc.CustomersUpdate).Where(cu => cu.UpdatedById == userId).Count(),
+                CustomerCreated = TheCRMContext.Users.Include(u => u.CustomersCreate).SelectMany(uc => uc.CustomersCreate).Where(cc => cc.CreatedById == userId).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname }).ToList(),
+                CustomerUpdated = TheCRMContext.Users.Include(u => u.CustomersUpdate).SelectMany(uc => uc.CustomersUpdate).Where(cu => cu.UpdatedById == userId).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname}).ToList()
             };
         }
 

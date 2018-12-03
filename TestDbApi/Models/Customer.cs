@@ -31,10 +31,10 @@ namespace TestDbApi.Models
         //public Guid UpdatedById { get; set;}
         [ForeignKey("CreatedBy")]
         public Guid? CreatedById { get; set; }
-        public User CreatedBy { get; set; }
+        public virtual User CreatedBy { get; set; }
         
         [ForeignKey("UpdatedBy")]
         public Guid? UpdatedById { get; set; }
-        public User UpdatedBy { get; set; }
+        public virtual User UpdatedBy { get; set; }
     }
 }

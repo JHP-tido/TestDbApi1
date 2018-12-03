@@ -18,7 +18,8 @@ namespace TestDbApi.Models.ExtendedModels
         public string Username { get; set; }
         public string Password { get; set; }
         public Roles Role { get; set; }
- 
+        public int NumberCustomersCreated { get; set; }
+        public int NumberCustomersUpdated { get; set; }
         public List<UserCustomerDetails> CustomerCreated { get; set; }
         public List<UserCustomerDetails> CustomerUpdated { get; set; }
 

@@ -194,10 +194,8 @@ namespace TestDbApi.Controllers
                 //Modify for delete on cascade in database and remove this code
                 if(_repository.Customer.CustomersByUser(id).Any())
                 {
-                    Console.WriteLine("_____________________________entra");
                     return BadRequest("Cannot delete user. It has related customers created or updated. Delete those customers first");
                 }
-                Console.WriteLine("_________________________no entra");
                 _repository.User.DeleteUser(user);
                 return NoContent();
             }

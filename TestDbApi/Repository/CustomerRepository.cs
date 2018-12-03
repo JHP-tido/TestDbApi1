@@ -49,23 +49,12 @@ namespace TestDbApi.Repository
             var create = FindByCondition(a => a.CreatedById.Equals(userId));
             if (create.Any())
             {
-                Console.WriteLine("_________________Entra 3");
                 return create;
             }
             else
             {
-                Console.WriteLine("_________________Entra 4");
                 return FindByCondition(a => a.UpdatedById.Equals(userId));
             }
-            /*var Create = FindByCondition(a => a.CreatedBy.Id.Equals(userId));
-            if(Create.Any())
-            {
-                return Create;
-            }
-            else
-            {
-                return FindByCondition(a => a.UpdatedBy.Id.Equals(userId));
-            }*/
         }
     }
 }
