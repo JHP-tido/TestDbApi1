@@ -20,12 +20,12 @@ namespace TestDbApi.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<string> Get()
+        public async Task<ActionResult<string>> Get()
         {
             //var userRole = _repoWrapper.User.FindByCondition(x => x.Role.Equals();
             //var users = _repoWrapper.User.FindAll();
-            var users = _repoWrapper.User.FindByCondition(x => x.Username.Equals("user1"));
-            var customers = _repoWrapper.Customer.FindAll();
+            var users = await _repoWrapper.User.FindByConditionAsync(x => x.Username.Equals("user1"));
+            var customers = await _repoWrapper.Customer.FindAllAsync();
             //var customers = _repoWrapper.Customer.FindByCondition(x => x.CreatedBy.Username.Equals("user1"));
             return Ok(customers);
         }

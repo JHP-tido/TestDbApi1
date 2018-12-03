@@ -17,57 +17,60 @@ namespace TestDbApi.Repository
         {
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return FindAll().OrderBy(us => us.Username);
+            var user = await FindAllAsync();
+            return user.OrderBy(us => us.Username);
         }
 
-        public User GetUserById(Guid userId)
+        public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            return FindByCondition(user => user.Id.Equals(userId))
-                .DefaultIfEmpty(new User())
-                .FirstOrDefault();
+            var user = await FindByConditionAsync(u => u.Id.Equals(userId));
+            return user.DefaultIfEmpty(new User()).FirstOrDefault();
         }
 
-        public UserExtended GetUserWithDetails(Guid userId)
+        public async Task<UserExtended> GetUserWithDetailsAsync(Guid userId)
         {
-            return new UserExtended(GetUserById(userId))
+            var user = await GetUserByIdAsync(userId);
+            return new UserExtended(user)
             {
-                NumberCustomersCreated = TheCRMContext.Users.Include(u => u.CustomersCreate).SelectMany(uc => uc.CustomersCreate).Where(cc => cc.CreatedById == userId).Count(),
-                NumberCustomersUpdated = TheCRMContext.Users.Include(u => u.CustomersUpdate).SelectMany(uc => uc.CustomersUpdate).Where(cu => cu.UpdatedById == userId).Count(),
-                CustomerCreated = TheCRMContext.Users.Include(u => u.CustomersCreate).SelectMany(uc => uc.CustomersCreate).Where(cc => cc.CreatedById == userId).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname }).ToList(),
-                CustomerUpdated = TheCRMContext.Users.Include(u => u.CustomersUpdate).SelectMany(uc => uc.CustomersUpdate).Where(cu => cu.UpdatedById == userId).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname}).ToList()
+                NumberCustomersCreated = await TheCRMContext.Users.Include(u => u.CustomersCreate).SelectMany(uc => uc.CustomersCreate).Where(cc => cc.CreatedById == userId).CountAsync(),
+                NumberCustomersUpdated = await TheCRMContext.Users.Include(u => u.CustomersUpdate).SelectMany(uc => uc.CustomersUpdate).Where(cu => cu.UpdatedById == userId).CountAsync(),
+                CustomerCreated = await TheCRMContext.Users.Include(u => u.CustomersCreate).SelectMany(uc => uc.CustomersCreate).Where(cc => cc.CreatedById == userId).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname }).ToListAsync(),
+                CustomerUpdated = await TheCRMContext.Users.Include(u => u.CustomersUpdate).SelectMany(uc => uc.CustomersUpdate).Where(cu => cu.UpdatedById == userId).Select(c => new UserCustomerDetails(){Name = c.Name, Surname = c.Surname}).ToListAsync()
             };
         }
 
-        public UserWithOutCustomerInfo GetUserWithOutCustomerInfo(Guid userId)
+        public async Task<UserWithOutCustomerInfo> GetUserWithOutCustomerInfoAsync(Guid userId)
         {
-            return new UserWithOutCustomerInfo(GetUserById(userId));
+            var user = await GetUserByIdAsync(userId);
+            return new UserWithOutCustomerInfo(user);
         }
 
-        public UserWithOutPass GetUserWithOutPass(Guid userId)
+        public async Task<UserWithOutPass> GetUserWithOutPassAsync(Guid userId)
         {
-            return new UserWithOutPass(GetUserById(userId));
+            var user = await GetUserByIdAsync(userId);
+            return new UserWithOutPass(user);
         }
 
-        public void CreateUser(User user)
+        public async Task CreateUserAsync(User user)
         {
             user.Id = Guid.NewGuid();
             Create(user);
-            Save();
+            await SaveAsync();
         }
 
-        public void UpdateUser(User dbUser, User user)
+        public async Task UpdateUserAsync(User dbUser, User user)
         {
             dbUser.Map(user);
             Update(dbUser);
-            Save();
+            await SaveAsync();
         }
 
-        public void DeleteUser(User user)
+        public async Task DeleteUserAsync(User user)
         {
             Delete(user);
-            Save();
+            await SaveAsync();
         }
     }
 }

@@ -23,11 +23,11 @@ namespace TestDbApi.Controllers
 
         //Implement LoggerManager NLog
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var users = _repository.User.GetAllUsers();
+                var users = await _repository.User.GetAllUsersAsync();
                 return Ok(users);
             }
             catch
@@ -37,11 +37,11 @@ namespace TestDbApi.Controllers
         }
 
         [HttpGet("{id}/customernull")]
-        public IActionResult GetUserById(Guid id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             try
             {
-                var user = _repository.User.GetUserById(id);
+                var user = await _repository.User.GetUserByIdAsync(id);
  
                 if (user.IsEmptyObject())
                 { 
@@ -59,11 +59,11 @@ namespace TestDbApi.Controllers
         }
 
         [HttpGet("{id}/customers")]
-        public IActionResult GetUserWithDetails(Guid id)
+        public async Task<IActionResult> GetUserWithDetails(Guid id)
         {
             try
             {
-                var user = _repository.User.GetUserWithDetails(id);
+                var user = await _repository.User.GetUserWithDetailsAsync(id);
 
                 if (user.IsEmptyObject())
                 {
@@ -81,11 +81,11 @@ namespace TestDbApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetUserWithOutCustomerInfo(Guid id)
+        public async Task<IActionResult> GetUserWithOutCustomerInfo(Guid id)
         {
             try
             {
-                var user = _repository.User.GetUserWithOutCustomerInfo(id);
+                var user = await _repository.User.GetUserWithOutCustomerInfoAsync(id);
 
                 if (user.IsEmptyObject())
                 {
@@ -103,11 +103,11 @@ namespace TestDbApi.Controllers
         }
 
         [HttpGet("{id}/notshowpass")]
-        public IActionResult GetUserWithOutPass(Guid id)
+        public async Task<IActionResult> GetUserWithOutPass(Guid id)
         {
             try
             {
-                var user = _repository.User.GetUserWithOutPass(id);
+                var user = await _repository.User.GetUserWithOutPassAsync(id);
 
                 if (user.IsEmptyObject())
                 {
@@ -125,7 +125,7 @@ namespace TestDbApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody]User user)
+        public async Task<IActionResult> CreateUser([FromBody]User user)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace TestDbApi.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                _repository.User.CreateUser(user);
+                await _repository.User.CreateUserAsync(user);
  
                 return Ok("Created");
                 //return CreatedAtRoute("UserById", new { id = user.UserId}, user);
@@ -151,7 +151,7 @@ namespace TestDbApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser([FromRoute]Guid id, [FromBody]User user)
+        public async Task<IActionResult> UpdateUser([FromRoute]Guid id, [FromBody]User user)
         {
             try
             {
@@ -165,13 +165,13 @@ namespace TestDbApi.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var dbUser = _repository.User.GetUserById(id);
+                var dbUser = await _repository.User.GetUserByIdAsync(id);
                 if (dbUser.IsEmptyObject())
                 {
                     return NotFound();
                 }
 
-                _repository.User.UpdateUser(dbUser, user);
+                await _repository.User.UpdateUserAsync(dbUser, user);
                 return NoContent();
             }
             catch
@@ -181,22 +181,22 @@ namespace TestDbApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser([FromRoute]Guid id)
+        public async Task<IActionResult> DeleteUser([FromRoute]Guid id)
         {
             try
             {
-                var user = _repository.User.GetUserById(id);
+                var user = await _repository.User.GetUserByIdAsync(id);
                 if (user.IsEmptyObject())
                 {
                     return NotFound();
                 }
-
+                var customer = await _repository.Customer.CustomersByUserAsync(id);
                 //Modify for delete on cascade in database and remove this code
-                if(_repository.Customer.CustomersByUser(id).Any())
+                if(customer.Any())
                 {
                     return BadRequest("Cannot delete user. It has related customers created or updated. Delete those customers first");
                 }
-                _repository.User.DeleteUser(user);
+                await _repository.User.DeleteUserAsync(user);
                 return NoContent();
             }
             catch

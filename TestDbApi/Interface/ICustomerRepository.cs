@@ -9,11 +9,12 @@ namespace TestDbApi.Interface
 {
     public interface ICustomerRepository : IRepositoryBase<Customer>
     {  
-        IEnumerable<Customer> GetAllCustomers();
-        Customer GetCustomerById(Guid customerId);
-        CustomerExtended GetCustomerWithDetails(Guid customerId);
-        string GetCustomerImage(Guid customerId);
+        Task<IEnumerable<Customer>> GetAllCustomersAsync();
+        Task<Customer> GetCustomerByIdAsync(Guid customerId);
+        Task<CustomerExtended> GetCustomerWithDetailsAsync(Guid customerId);
+        Task<string> GetCustomerImageAsync(Guid customerId);
         //Modify for delete on cascade in database and remove this code
-        IEnumerable<Customer> CustomersByUser(Guid userId);
+        Task<IEnumerable<Customer>> CustomersByUserAsync(Guid userId);
+        Task<CustomerWithUsersId> GetCustomersWithUsersIdAsync(Guid customerId);
     }
 }

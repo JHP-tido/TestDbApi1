@@ -9,13 +9,13 @@ namespace TestDbApi.Interface
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
-        IEnumerable<User> GetAllUsers();
-        User GetUserById(Guid userId);
-        UserExtended GetUserWithDetails(Guid userId);
-        UserWithOutCustomerInfo GetUserWithOutCustomerInfo(Guid userId);
-        UserWithOutPass GetUserWithOutPass(Guid userId);
-        void CreateUser(User user);
-        void UpdateUser(User dbUser, User user);
-        void DeleteUser(User user);
+        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<User> GetUserByIdAsync(Guid userId);
+        Task<UserExtended> GetUserWithDetailsAsync(Guid userId);
+        Task<UserWithOutCustomerInfo> GetUserWithOutCustomerInfoAsync(Guid userId);
+        Task<UserWithOutPass> GetUserWithOutPassAsync(Guid userId);
+        Task CreateUserAsync(User user);
+        Task UpdateUserAsync(User dbUser, User user);
+        Task DeleteUserAsync(User user);
     }
 }

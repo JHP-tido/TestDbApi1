@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TestDbApi.Interface;
 using TestDbApi.Data;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestDbApi.Repository
 {
@@ -17,14 +18,14 @@ namespace TestDbApi.Repository
             TheCRMContext = theCRMContext;
         }
 
-        public IEnumerable<T> FindAll()
+        public async Task<IEnumerable<T>> FindAllAsync()
         {
-            return TheCRMContext.Set<T>();
+            return await TheCRMContext.Set<T>().ToListAsync();
         }
 
-        public IEnumerable<T> FindByCondition(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression)
         {
-            return TheCRMContext.Set<T>().Where(expression);
+            return await TheCRMContext.Set<T>().Where(expression).ToListAsync();
         }
 
         public void Create(T entity)
@@ -42,9 +43,9 @@ namespace TestDbApi.Repository
             TheCRMContext.Set<T>().Remove(entity);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            TheCRMContext.SaveChanges();
+            await TheCRMContext.SaveChangesAsync();
         }
     }
 }

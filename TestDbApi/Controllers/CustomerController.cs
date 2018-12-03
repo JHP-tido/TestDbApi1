@@ -21,11 +21,11 @@ namespace TestDbApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllCustomers()
+        public async Task<IActionResult> GetAllCustomers()
         {
             try
             {
-                var customers = _repository.Customer.GetAllCustomers();
+                var customers = await _repository.Customer.GetAllCustomersAsync();
                 return Ok(customers);
             }
             catch
@@ -34,12 +34,12 @@ namespace TestDbApi.Controllers
             }
         }
 
-        [HttpGet("{id}/nouserinfo")]
-        public IActionResult GetCustomerById(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCustomerById(Guid id)
         {
             try
             {
-                var customer = _repository.Customer.GetCustomerById(id);
+                var customer = await _repository.Customer.GetCustomerByIdAsync(id);
  
                 if (customer.IsEmptyObject())
                 { 
@@ -56,12 +56,34 @@ namespace TestDbApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetCustomerWithDetails(Guid id)
+        [HttpGet("{id}/userid")]
+        public async Task<IActionResult> GetCustomerWithUserId(Guid id)
         {
             try
             {
-                var customer = _repository.Customer.GetCustomerWithDetails(id);
+                var customer = await _repository.Customer.GetCustomersWithUsersIdAsync(id);
+
+                if (customer.IsEmptyObject())
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(customer);
+                }
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("{id}/user")]
+        public async Task<IActionResult> GetCustomerWithDetails(Guid id)
+        {
+            try
+            {
+                var customer = await _repository.Customer.GetCustomerWithDetailsAsync(id);
  
                 if (customer.IsEmptyObject())
                 {
@@ -79,11 +101,11 @@ namespace TestDbApi.Controllers
         }
 
         [HttpGet("{id}/image")]
-        public IActionResult GetCustomerImage(Guid id)
+        public async Task<IActionResult> GetCustomerImage(Guid id)
         {
             try
             {
-                var imageUrl = _repository.Customer.GetCustomerImage(id);
+                var imageUrl = await _repository.Customer.GetCustomerImageAsync(id);
 
                 if (imageUrl == null || imageUrl == "")
                 {

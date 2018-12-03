@@ -16,45 +16,55 @@ namespace TestDbApi.Repository
         {
         }
 
-        public IEnumerable<Customer> GetAllCustomers()
+        public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            return FindAll().OrderBy(cu => cu.Name);
+            var customer = await FindAllAsync();
+            return customer.OrderBy(cu => cu.Name);
         }
 
-        public Customer GetCustomerById(Guid customerId)
+        public async Task<Customer> GetCustomerByIdAsync(Guid customerId)
         {
-            return FindByCondition(customer => customer.Id.Equals(customerId))
-                .DefaultIfEmpty(new Customer())
-                .FirstOrDefault();
+            var customer = await FindByConditionAsync(cu => cu.Id.Equals(customerId));
+            return customer.DefaultIfEmpty(new Customer()).FirstOrDefault();
         }
 
-        public CustomerExtended GetCustomerWithDetails(Guid customerId)
+        public async Task<CustomerExtended> GetCustomerWithDetailsAsync(Guid customerId)
         {
-            return new CustomerExtended(GetCustomerById(customerId))
+            var customer = await GetCustomerByIdAsync(customerId);
+            var createdByQ = await TheCRMContext.Customers.Include(u => u.CreatedBy).Where(c => c.Id == customerId).FirstOrDefaultAsync();
+            var updatedByQ = await TheCRMContext.Customers.Include(u => u.UpdatedBy).Where(c => c.Id == customerId).FirstOrDefaultAsync();
+            return new CustomerExtended(customer)
             {
-                CreatedBy = TheCRMContext.Customers.Include(u => u.CreatedBy).Where(c => c.Id == customerId).FirstOrDefault().CreatedBy.Username,
-                UpdatedBy = TheCRMContext.Customers.Include(u => u.UpdatedBy).Where(c => c.Id == customerId).FirstOrDefault().UpdatedBy.Username
+                CreatedBy = createdByQ.CreatedBy.Username,
+                UpdatedBy = updatedByQ.UpdatedBy.Username
             };
         }
 
-        public string GetCustomerImage(Guid customerId)
+        public async Task<string> GetCustomerImageAsync(Guid customerId)
         {
-            return GetCustomerById(customerId).Image;
+            var customer = await GetCustomerByIdAsync(customerId);
+            return customer.Image;
         }
 
         //Modify for delete on cascade in database and remove this code
         //Charge Lazy loader https://docs.microsoft.com/en-us/ef/core/querying/related-data#lazy-loading
-        public IEnumerable<Customer> CustomersByUser(Guid userId)
+        public async Task<IEnumerable<Customer>> CustomersByUserAsync(Guid userId)
         {
-            var create = FindByCondition(a => a.CreatedById.Equals(userId));
+            var create = await FindByConditionAsync(a => a.CreatedById.Equals(userId));
             if (create.Any())
             {
                 return create;
             }
             else
             {
-                return FindByCondition(a => a.UpdatedById.Equals(userId));
+                return await FindByConditionAsync(a => a.UpdatedById.Equals(userId));
             }
+        }
+
+        public async Task<CustomerWithUsersId> GetCustomersWithUsersIdAsync(Guid customerId)
+        {
+            var customer = await GetCustomerByIdAsync(customerId);
+            return new CustomerWithUsersId(customer);
         }
     }
 }

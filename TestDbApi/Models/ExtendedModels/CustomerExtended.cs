@@ -29,4 +29,29 @@ namespace TestDbApi.Models.ExtendedModels
             Image = customer.Image;
         }
     }
+
+    public class CustomerWithUsersId : IEntity
+    {
+        public Guid Id { get; set; }
+        //public Guid CustomerId { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Image { get; set; }
+        public Guid? CreatedById { get; set; }
+        public Guid? UpdatedById { get; set; }
+
+        public CustomerWithUsersId() 
+        {
+        }
+
+        public CustomerWithUsersId(Customer customer)
+        {
+            Id = customer.Id;
+            Name = customer.Name;
+            Surname = customer.Surname;
+            Image = customer.Image;
+            CreatedById = customer.CreatedById;
+            UpdatedById = customer.UpdatedById;
+        }
+    }
 }
