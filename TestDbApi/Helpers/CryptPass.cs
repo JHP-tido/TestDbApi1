@@ -33,7 +33,6 @@ namespace TestDbApi.Helpers
                 }
             }
             return input;
-
         }
 
         public static string Decrypt(string cipherText)
