@@ -9,11 +9,13 @@ using System.Text;
 
 namespace TestDbApi.Helpers
 {
+    //By someone in internet XDXD
     public class CryptPass
     {
         public static string Encrypt(string input)
         {
-            string EncryptionKey = "MAKV2SPBNI99212";
+            string EncryptionKey = "JHPC3POR2D21990";
+            //string EncryptionKey = "MAKV2SPBNI99212";
             byte[] clearBytes = Encoding.Unicode.GetBytes(input);
             using (Aes encryptor = Aes.Create())
             {
@@ -36,7 +38,8 @@ namespace TestDbApi.Helpers
 
         public static string Decrypt(string cipherText)
         {
-            string EncryptionKey = "MAKV2SPBNI99212";
+            string EncryptionKey = "JHPC3POR2D21990";
+            //string EncryptionKey = "MAKV2SPBNI99212";
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
             {
