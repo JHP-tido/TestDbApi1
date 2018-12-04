@@ -33,6 +33,8 @@ namespace TestDbApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
+            //Added JWT service from ServiceExtension
+            services.ConfigureJWTService(Configuration);
             services.Configure<MySettings>(Configuration.GetSection("mySettings"));
             MySettings mySettings = new MySettings();
             Configuration.GetSection("mySettings").Bind(mySettings);
@@ -59,7 +61,7 @@ namespace TestDbApi
             {
                 app.UseHsts();
             }
-
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

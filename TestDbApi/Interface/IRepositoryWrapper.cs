@@ -9,5 +9,7 @@ namespace TestDbApi.Interface
     {
         IUserRepository User { get; }
         ICustomerRepository Customer { get; }
+
+        ILoginRepository Login { get; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestDbApi.Interface;
 using TestDbApi.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace TestDbApi.Repository
 {
@@ -12,6 +13,8 @@ namespace TestDbApi.Repository
         private TheCRMContext _crmContext;
         private IUserRepository _user;
         private ICustomerRepository _customer;
+        private ILoginRepository _login;
+        private IConfiguration _config;
 
         public IUserRepository User
         {
@@ -39,9 +42,23 @@ namespace TestDbApi.Repository
             }
         }
 
-        public RepositoryWrapper(TheCRMContext theCRMContext)
+        public ILoginRepository Login
+        {
+            get
+            {
+                if (_login == null)
+                {
+                    _login = new LoginRepository(_crmContext,_config);
+                }
+
+                return _login;
+            }
+        }
+
+        public RepositoryWrapper(TheCRMContext theCRMContext, IConfiguration config)
         {
             _crmContext = theCRMContext;
+            _config = config;
         }
     }
 }
