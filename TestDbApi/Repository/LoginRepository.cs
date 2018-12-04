@@ -36,22 +36,23 @@ namespace TestDbApi.Repository
         {
             try
             {
-            Console.WriteLine("_______________Entrada9CredentialsInit");
-            Console.WriteLine("_____jwt:issuer: " + _config["Jwt:Issuer"]);
-            Console.WriteLine("_____jwt:key: " + _config["Jwt:Key"]);
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            Console.WriteLine("_______________Entrada10CredentialsCreate");
+                //Change key in appsettings.json, needed size more than 128 bytes
+                Console.WriteLine("_______________Entrada9CredentialsInit");
+                Console.WriteLine("_____jwt:issuer: " + _config["Jwt:Issuer"]);
+                Console.WriteLine("_____jwt:key: " + _config["Jwt:Key"]);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                Console.WriteLine("_______________Entrada10CredentialsCreate");
             
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-            _config["Jwt:Issuer"],
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: creds);
-            Console.WriteLine("_______________Entrada11CredentialsCreate");
-            var value = new JwtSecurityTokenHandler().WriteToken(token);
-            Console.WriteLine("__________Value: " + token);
+                var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+                _config["Jwt:Issuer"],
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+                Console.WriteLine("_______________Entrada11CredentialsCreate");
+                var value = new JwtSecurityTokenHandler().WriteToken(token);
+                Console.WriteLine("__________Value: " + token);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                return new JwtSecurityTokenHandler().WriteToken(token);
             }
             catch(Exception ex)
             {
