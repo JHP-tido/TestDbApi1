@@ -40,6 +40,7 @@ namespace TestDbApi.Repository
                 Console.WriteLine("_______________Entrada9CredentialsInit");
                 Console.WriteLine("_____jwt:issuer: " + _config["Jwt:Issuer"]);
                 Console.WriteLine("_____jwt:key: " + _config["Jwt:Key"]);
+                //Here call the appsettings.json key
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
                 Console.WriteLine("_______________Entrada10CredentialsCreate");
