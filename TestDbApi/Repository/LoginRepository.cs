@@ -37,29 +37,26 @@ namespace TestDbApi.Repository
             try
             {
                 //Change key in appsettings.json, needed size more than 128 bytes
-                Console.WriteLine("_______________Entrada9CredentialsInit");
-                Console.WriteLine("_____jwt:issuer: " + _config["Jwt:Issuer"]);
-                Console.WriteLine("_____jwt:key: " + _config["Jwt:Key"]);
+                //Issuer: Only http://localhost:63383/ send you valid token, configure appsettings.json
+                //for you debug URL local or configure your project to 63383 or configure both for local URL that you want
                 //Here call the appsettings.json key
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                Console.WriteLine("_______________Entrada10CredentialsCreate");
-            
+
                 var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds);
-                Console.WriteLine("_______________Entrada11CredentialsCreate");
+
                 var value = new JwtSecurityTokenHandler().WriteToken(token);
-                Console.WriteLine("__________Value: " + token);
 
                 return new JwtSecurityTokenHandler().WriteToken(token);
             }
             catch(Exception ex)
             {
-                Console.WriteLine("_::_________Esta es la exception: " + ex.Message.ToString());
+                Console.WriteLine("_::_________Error: " + ex.Message.ToString());
+                return ex.Message.ToString();
             }
-            return("slfks");
         }
     }
 }
