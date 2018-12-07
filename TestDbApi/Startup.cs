@@ -35,6 +35,7 @@ namespace TestDbApi
             services.AddOptions();
             //Added JWT service from ServiceExtension
             services.ConfigureJWTService(Configuration);
+            services.ConfigureAuthorizationPolicy();
             services.Configure<MySettings>(Configuration.GetSection("mySettings"));
             MySettings mySettings = new MySettings();
             Configuration.GetSection("mySettings").Bind(mySettings);

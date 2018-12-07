@@ -36,6 +36,11 @@ namespace TestDbApi.Repository
         {
             try
             {
+                var claims = new[] {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, Enum.GetName(typeof(Roles), user.Role)),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                };
                 //Change key in appsettings.json, needed size more than 128 bytes
                 //Issuer: Only http://localhost:63383/ send you valid token, configure appsettings.json
                 //for you debug URL local or configure your project to 63383 or configure both for local URL that you want
@@ -45,6 +50,7 @@ namespace TestDbApi.Repository
 
                 var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
+                claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds);
 

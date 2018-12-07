@@ -38,5 +38,16 @@ namespace TestDbApi.Extensions
                     };
                 });
         }
+
+        public static void ConfigureAuthorizationPolicy(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("admin",
+                    policy => policy.RequireRole("admin"));
+                options.AddPolicy("user",
+                    policy => policy.RequireRole("user"));
+            });
+        }
     }
 }
