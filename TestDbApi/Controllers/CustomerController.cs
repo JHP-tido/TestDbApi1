@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestDbApi.Interface;
 using TestDbApi.Models.Extensions;
+using TestDbApi.Models;
+using System.Security.Claims;
 
 namespace TestDbApi.Controllers
 {
@@ -117,6 +119,36 @@ namespace TestDbApi.Controllers
                 {
                     return Ok(imageUrl);
                 }
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCustomer([FromBody]Customer customer)
+        {
+            try
+            {
+                if (customer.IsObjectNull())
+                {
+                    return BadRequest("User object is null");
+                }
+
+                customer.CreatedById = new Guid(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                customer.UpdatedById = new Guid(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                //Will change in future for route in wwwroot where the images are stored
+                customer.Image = null;
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid model object");
+                }
+
+                await _repository.Customer.CreateCustomerAsync(customer);
+
+                return Ok("Created");
+                //return CreatedAtRoute("UserById", new { id = user.UserId}, user);
             }
             catch
             {

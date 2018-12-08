@@ -16,5 +16,6 @@ namespace TestDbApi.Interface
         //Modify for delete on cascade in database and remove this code
         Task<IEnumerable<Customer>> CustomersByUserAsync(Guid userId);
         Task<CustomerWithUsersId> GetCustomersWithUsersIdAsync(Guid customerId);
+        Task CreateCustomerAsync(Customer customer);
     }
 }

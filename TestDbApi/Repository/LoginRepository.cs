@@ -37,9 +37,9 @@ namespace TestDbApi.Repository
             try
             {
                 var claims = new[] {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, Enum.GetName(typeof(Roles), user.Role)),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                    new Claim(ClaimTypes.Role, Enum.GetName(typeof(Roles), user.Role)),  
                 };
                 //Change key in appsettings.json, needed size more than 128 bytes
                 //Issuer: Only http://localhost:63383/ send you valid token, configure appsettings.json

@@ -66,5 +66,12 @@ namespace TestDbApi.Repository
             var customer = await GetCustomerByIdAsync(customerId);
             return new CustomerWithUsersId(customer);
         }
+
+        public async Task CreateCustomerAsync(Customer customer)
+        {
+            customer.Id = Guid.NewGuid();
+            Create(customer);
+            await SaveAsync();
+        }
     }
 }
